@@ -122,7 +122,7 @@ class Blockchain {
                 reject("timeout");
             } else {
                 if (bitcoinMessage.verify(message,address,signature)) {
-                    let newBlock = new BlockClass.Block(star);
+                    let newBlock = new BlockClass.Block({"star":star,"owner":address});
                     await this._addBlock(newBlock);
                     resolve(newBlock);
                 } else {
@@ -178,7 +178,7 @@ class Blockchain {
         let stars = [];
         return new Promise((resolve, reject) => {
             self.chain.forEach(async (blk)=>{
-                let data = blk.getBData();
+                let data = JSON.parse(await blk.getBData());
                 if (data?.owner === address) {
                     stars.push(data);
                 }
